@@ -7,13 +7,13 @@ The Chip is QFN48 and has no known datasheet but here is some reversed pinout:
 1 - OSC 32mhz in
 2 - OSC 32mhz out
 3 - Reset
-4 - 
+4 - Something NFC Power
 5 - GPIO 2 - EPD BS
 6 - GPIO 3 - Test mode input
-7 - 
-8 - 
-9 - 
-10 - 
+7 - UART TXD
+8 - IO Wakeup
+9 - UART RXD
+10 - Something NFC i2c
 11 - 
 12 - 
 
@@ -38,23 +38,25 @@ The Chip is QFN48 and has no known datasheet but here is some reversed pinout:
 30 - 
 31 - GPIO 22 - SPI SCK / EPD Clock
 32 - GPIO 23 - EPD CS
-33 - 
+33 - GPIO 24 - EPD Reset
 34 - 
 35 - 
 36 - 
 
-37 - 
-38 - 
+37 - CF2 Capacitor
+38 - CF1 Capacitor
 39 - 
 40 - 
 41 - 
 42 - 
 43 - GPIO 26 - EPD D/C
 44 - GPIO 27 - EPD Busy
-45 - GPIO 28 - EPD Reset
-46 - 
+45 - Something NFC i2c
+46 - Something NFC i2c
 47 - 
 48 - 
+
+
 GPIO Register
 
 0x48070000 + OFFSET!!! = Gpio function 0=GPIO 6=SPI
