@@ -45,7 +45,7 @@ The Chip is QFN48 and has no known datasheet but here is some reversed pinout:
 
 37 - CF2 Capacitor
 38 - CF1 Capacitor
-39 - SOME VDD or VCC
+39 - VCC 3.3V maybe VBAT
 40 - SOME VDD or VCC
 41 - SOME VDD or VCC
 42 - SOME VDD or VCC
