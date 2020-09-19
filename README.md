@@ -63,4 +63,11 @@ GPIO Register
 0x4A040004 = GPIO mode Input/Output
 0x4A040000 = GPIO set/clear
 0x4A040050 = GPIO Read
+
+Currently known memory regions:
+
+0x00000000 - 0x00020000  ROM
+0x00100000 - 0x00128000  RAM
+
+0x20100000 - 0x20128000 Maybe also ram, contains the firmware itself
 ```
