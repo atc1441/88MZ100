@@ -3,7 +3,7 @@
 4.2" E-Paper Price tag and its 88MZ100 SOC infos:
 
 The Chip is QFN48 and has no known datasheet but here is some reversed pinout:
-
+´´´
 1 - OSC 32mhz in
 2 - OSC 32mhz out
 3 - Reset
@@ -55,7 +55,7 @@ The Chip is QFN48 and has no known datasheet but here is some reversed pinout:
 46 - 
 47 - 
 48 - 
-
+´´´
 GPIO Register
 
 0x48070000 + OFFSET!!! = Gpio function 0=GPIO 6=SPI
