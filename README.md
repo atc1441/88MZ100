@@ -55,10 +55,10 @@ The Chip is QFN48 and has no known datasheet but here is some reversed pinout:
 46 - 
 47 - 
 48 - 
-´´´
 GPIO Register
 
 0x48070000 + OFFSET!!! = Gpio function 0=GPIO 6=SPI
 0x4A040004 = GPIO mode Input/Output
 0x4A040000 = GPIO set/clear
 0x4A040050 = GPIO Read
+```
