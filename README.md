@@ -66,8 +66,8 @@ GPIO Register
 
 Currently known memory regions:
 
-0x00000000 - 0x00020000  ROM
-0x00100000 - 0x00128000  RAM
+0x00000000 - 0x0001ffff  ROM
+0x00100000 - 0x00127fff  RAM
 
-0x20100000 - 0x20128000 Maybe also ram, contains the firmware itself
+0x20100000 - 0x20127fff Maybe also ram, contains the firmware itself
 ```
