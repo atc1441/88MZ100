@@ -18,7 +18,7 @@ The Chip is QFN48 and has no known datasheet but here is some reversed pinout:
 12 - SOME VDD or VCC
 
 13 - Antenna OUT
-14 - 
+14 - NC
 15 - SOME VDD or VCC
 16 - GPIO 8 - 
 17 - GPIO 9 - 
