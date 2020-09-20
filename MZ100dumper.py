@@ -35,13 +35,13 @@ def getHEX(block):
             print("Closing because of no good answer from OpenOCD")
             exit()   
         if currentAnswer[0:10] == '0x4a07000c':
-            print "Current "+ str(count+block) + " "+currentAnswer[12:14]
-            file = open("dump.txt","a+") 
-            file.write(currentAnswer[12:14]) 
+            print "Current "+ str(count+block) + " "+currentAnswer[12:14], "\r",
+            file = open("dump.bin","a+") 
+            file.write(currentAnswer[12:14].decode("hex")) 
             file.close() 
             count = count + 1
             if count > 0x4fff:
-                print "current block done"
+                print "\nblock",block,"done"
                 tn.close
                 return
 	tn.close
