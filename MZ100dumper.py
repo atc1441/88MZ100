@@ -18,7 +18,7 @@ def getHEX(block):
     time.sleep(3)
     tn.write("halt\n".encode("utf8")) # Stop CPU
     time.sleep(3)
-    tn.write("mww 0x4A070020 0x7d000\n".encode("utf8")) # Set count to 512kb
+    tn.write("mww 0x4A070020 0x80000\n".encode("utf8")) # Set count to 512kb
     time.sleep(1)
     tn.write("mww 0x4A070014 "+str(block)+"\n".encode("utf8")) # Set Flash address
     time.sleep(1)
