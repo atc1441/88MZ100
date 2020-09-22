@@ -72,4 +72,21 @@ Currently known memory regions:
 0x20100000 - 0x20127fff Just the same RAM 160kb as on 0x00100000
 
 0x00000000 - 0x00800000 Internal SPI Flash 512kb <- only acessable via internal QSPI Hardware
+
+
+Fimrware Header:
+
+Little endian so its switched!
+
+8 times uint32_t
+
+00 00 00 00 = 
+23 01 CC CC = 
+44 C6 00 00 = Length of image counts after header
+07 7F EE FF = 
+
+FF FF FF FF = 
+00 00 10 00 = RAM Loading point 0x100000
+41 01 10 00 = Entry point 0x100141
+4C 56 52 4D = Magic string MRVL
 ```
