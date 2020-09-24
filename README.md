@@ -85,7 +85,7 @@ Little endian so its switched!
 0x20125038 = 44 C6 00 00 = Length of image counts after header
 0x2012503C = 07 7F EE FF = CONFIG 2
 
-0x20125040 = FF FF FF FF = Seems like security, DONT TOUCH THIS!!!
+0x20125040 = FF FF FF FF = Password, if not this then SWD is disabled and UART bootloader needs password to work
 0x20125044 = 00 00 10 00 = RAM Loading point 0x100000
 0x20125048 = 41 01 10 00 = Entry point 0x100141
 0x2012504C = 4C 56 52 4D = Magic string MRVL
