@@ -80,13 +80,19 @@ Little endian so its switched!
 
 8 times uint32_t
 
-00 00 00 00 = 
-23 01 CC CC = 
-44 C6 00 00 = Length of image counts after header
-07 7F EE FF = 
+0x20125030 = 00 00 00 00 = Just to check if Flash is empty
+0x20125034 = 23 01 CC CC = CONFIG 1
+0x20125038 = 44 C6 00 00 = Length of image counts after header
+0x2012503C = 07 7F EE FF = CONFIG 2
 
-FF FF FF FF = 
-00 00 10 00 = RAM Loading point 0x100000
-41 01 10 00 = Entry point 0x100141
-4C 56 52 4D = Magic string MRVL
+0x20125040 = FF FF FF FF = Seems like security, DONT TOUCH THIS!!!
+0x20125044 = 00 00 10 00 = RAM Loading point 0x100000
+0x20125048 = 41 01 10 00 = Entry point 0x100141
+0x2012504C = 4C 56 52 4D = Magic string MRVL
+
+CONFIG 1:
+Byte0 = 
+Byte1 = UART Port 0 or 1
+Byte2 = 
+Byte3 = 
 ```
