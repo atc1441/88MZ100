@@ -68,8 +68,8 @@ Currently known memory regions:
 
 0x00000000 - 0x0001ffff  ROM 128kb
 
-0x00100000 - 0x00127fff  RAM 160kb
-0x20100000 - 0x20127fff Just the same RAM 160kb as on 0x00100000
+0x00100000 - 0x00127fff  RAM 160kb <- For code execution
+0x20100000 - 0x20127fff Just the same RAM 160kb as on 0x00100000 <- For RAM
 
 0x00000000 - 0x00800000 Internal SPI Flash 512kb <- only acessable via internal QSPI Hardware
 
