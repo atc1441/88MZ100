@@ -83,7 +83,7 @@ for x in range(int(0x80000/block_size)):
         data_str = serialPort.read(serialPort.inWaiting())
         print(' '.join(format(x, '02x') for x in data_str))
         file = open("dump_uart.bin","ab+") 
-        file.write((''.join(chr(i) for i in data_str[4:-1])).encode('charmap')) 
+        file.write((''.join(chr(i) for i in data_str[4:])).encode('charmap')) 
         file.close() 
 
 serialPort.close()
