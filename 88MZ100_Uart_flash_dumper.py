@@ -75,8 +75,9 @@ print("Waiting for boot promt, please reset the chip")
 wait_for_prompt()
 uart_flush()
 
-for x in range(20000):
-    send_cmd(read_flash(x*128,128)) 
+block_size = 128 # bytes per request
+for x in range(int(0x80000/block_size)):
+    send_cmd(read_flash(x*block_size,block_size)) 
     time.sleep(0.1)
     while(serialPort.inWaiting()>0):#Read the answer from device
         data_str = serialPort.read(serialPort.inWaiting())
