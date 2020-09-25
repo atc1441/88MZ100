@@ -52,11 +52,11 @@ def uart_flush():
 def enable_swd(state=1):
     return get_cmd(1,0,not state)
     
-def read_memory(address,length):#max 256*4 bytes
+def read_memory(address,length):#max 128bytes
     return get_cmd(2,int(length/4),address)
 
 #Example: write_memory(0x00,bytearray([0x02, 0x07, 0x40, 0x34]))
-def write_memory(address,data):#max 256*4 bytes
+def write_memory(address,data):#max 128bytes
     return get_cmd(3,int(len(data)),0x100000+address)+data
     
 def read_flash(address,length):
