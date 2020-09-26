@@ -57,6 +57,21 @@ The Chip is QFN48 and has no known datasheet but here is some reversed pinout:
 48 - SOME VDD or VCC
 
 
+UART0 possible GPIOs:
+NR= TXD, RXD
+0 = 19,20
+1 = 2,3
+2 = 8,9
+3 = 10,11
+4 = 24,25
+5 = 26,27
+
+UART1 possible GPIOS:
+NR= TXD, RXD
+0 = 4,6
+1 = 6,7
+2 = 21,22
+
 GPIO Register
 
 0x48070000 + OFFSET!!! = Gpio function 0=GPIO 6=SPI
@@ -80,7 +95,7 @@ Little endian so its switched!
 
 8 times uint32_t
 
-0x20125030 = 00 00 00 00 = Just to check if Flash is empty
+0x20125030 = 00 00 00 00 = If enabled CRC or flash check
 0x20125034 = 23 01 CC CC = CONFIG 1
 0x20125038 = 44 C6 00 00 = Length of image counts after header
 0x2012503C = 07 7F EE FF = CONFIG 2
