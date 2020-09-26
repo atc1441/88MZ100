@@ -95,7 +95,7 @@ Little endian so its switched!
 
 8 times uint32_t
 
-0x20125030 = 00 00 00 00 = If enabled CRC or flash check
+0x20125030 = 00 00 00 00 = CRC if used, or check if flash empty
 0x20125034 = 23 01 CC CC = CONFIG 1
 0x20125038 = 44 C6 00 00 = Length of image counts after header
 0x2012503C = 07 7F EE FF = CONFIG 2
@@ -105,9 +105,23 @@ Little endian so its switched!
 0x20125048 = 41 01 10 00 = Entry point 0x100141
 0x2012504C = 4C 56 52 4D = Magic string MRVL
 
-CONFIG 1:
-Byte0 = 
-Byte1 = UART Port 0 or 1
-Byte2 = 
-Byte3 = 
+CONFIG_1
+31:17 = Reserved
+16:13 = UART_GPIO 
+12:9 = Boot_delay 0=20ms 1=40ms 2=1s 3=2s 4=3s
+8 = UART Port 0 or 1
+7 = 0=Enable 1=Disable QSPI Prescaler
+6:0 = 0-127 * 16 QSPI Prescaler
+
+CONFIG_2
+31:24 = Reserved
+23:16 = BaudRate inversed default 0xEE
+15:14 = 0-2 * 8 Enable custom Boot delay
+13:8 = Reserved
+7:6 = Wrong Pass entry till Erase 0 = 0ff 
+4:3 = QSPI Mode
+2:0 = CRC Check 0=CRC_16_CCITT 1=CRC_16_IBM 2=CRC_16_T10_DIF 3=CRC_32_IEEE 7=NO CRC
+
+
+
 ```
