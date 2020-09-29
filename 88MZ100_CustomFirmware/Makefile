@@ -13,8 +13,6 @@ build: clean compile run
 
 compile:
 	@$(AS) -mcpu=cortex-m3 --gdwarf-2 -mthumb-interwork -o build/startup.o startup.S
-	@$(CC) $(CC_FlAGS) -c system.c -o build/system.o
-	@$(CC) $(CC_FlAGS) -c zigbee.c -o build/zigbee.o
 	@$(CC) $(CC_FlAGS) -c mz100_clock.c -o build/mz100_clock.o
 	@$(CC) $(CC_FlAGS) -c mz100_driver.c -o build/mz100_driver.o
 	@$(CC) $(CC_FlAGS) -c mz100_pinmux.c -o build/mz100_pinmux.o
@@ -25,7 +23,7 @@ compile:
 	@$(CC) $(CC_FlAGS) -c xflash.c -o build/xflash.o
 	@$(CC) $(CC_FlAGS) -c mz100_uart.c -o build/mz100_uart.o
 	@$(CC) $(CC_FlAGS) -c epd.c -o build/epd.o
-	@$(CC) $(CC_END_FLAGS) build/zigbee.o build/system.o build/startup.o build/mz100_clock.o build/mz100_driver.o build/mz100_pinmux.o build/mz100_ssp.o build/mz100_rtc.o build/mz100_gpio.o build/xflash.o build/mz100_uart.o build/epd.o build/$(PROJECT_NAME).o -o $(PROJECT_NAME).axf
+	@$(CC) $(CC_END_FLAGS) build/startup.o build/mz100_clock.o build/mz100_driver.o build/mz100_pinmux.o build/mz100_ssp.o build/mz100_rtc.o build/mz100_gpio.o build/xflash.o build/mz100_uart.o build/epd.o build/$(PROJECT_NAME).o -o $(PROJECT_NAME).axf
 	@$(OBJCOPY) -v -O binary $(PROJECT_NAME).axf $(PROJECT_NAME).bin
 	
 clean:
