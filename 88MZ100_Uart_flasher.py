@@ -13,7 +13,7 @@ usedCom = sys.argv[1] #"COM14"
 read_or_write = sys.argv[2]
 file = sys.argv[3]
 usedBaud = 115200
-serialPort = serial.Serial(usedCom, usedBaud, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE)
+serialPort = serial.Serial(usedCom, usedBaud, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout=1)
 print('Using port: {}'.format(usedCom))
 
 bootloader_password = 0xffffffff
@@ -116,7 +116,7 @@ def flash_file(filename):
     send_cmd(run_address(entry_point))
 
 def dump_flash(filename):
-    block_size = 80 # bytes per request
+    block_size = 128 # bytes per request
     for x in range(int(0x80000/block_size)):
         send_cmd(read_flash(x*block_size,block_size)) 
         current_block_dump = uart_receive_handler(4+block_size)
