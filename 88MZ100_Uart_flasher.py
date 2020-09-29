@@ -9,6 +9,15 @@ import os
 import time
 import serial.tools.list_ports
 
+if(len(sys.argv)!=4):
+    print("Example: COM1 read file.bin, or COM1 write file.bin")
+    print("Not the right arguments but here are the... please wait...")
+    ports_list = "possible UART ports: "
+    for port in serial.tools.list_ports.comports():
+        ports_list += port.device + " "
+    print(ports_list)
+    exit()
+    
 usedCom = sys.argv[1] #"COM14"
 read_or_write = sys.argv[2]
 file = sys.argv[3]
@@ -100,7 +109,7 @@ def flash_file(filename):
     entry_point = bytes_to_int(data[4:8])
     print("entry point: "+ hex(entry_point))
     
-    block_size = 80 # bytes per request
+    block_size = 80 # bytes per sending
     cur_address = 0
     while(filesize-cur_address>0):
         if(filesize-cur_address>block_size):
@@ -108,11 +117,11 @@ def flash_file(filename):
         else:
             cur_size = filesize-cur_address
         cur_data = data[cur_address:cur_address+cur_size]
-        print("Current address: " + hex(cur_address) + " size: " + hex(cur_size))
+        print("Current address: " + hex(cur_address))
         send_cmd(write_memory(cur_address,cur_data))
         cur_address+=cur_size
         uart_receive_handler(4)
-    print("Running fimrware now")
+    print("Running fimrware from: " + hex(entry_point))
     send_cmd(run_address(entry_point))
 
 def dump_flash(filename):
