@@ -133,6 +133,7 @@ def dump_flash(filename):
         file.write((''.join(chr(i) for i in current_block_dump[4:])).encode('charmap')) 
         file.close() 
 
+serialPort.write(to_byte(0x3A,1))
 print("Waiting for boot promt, please reset the chip") 
 wait_for_prompt()
 uart_flush()
