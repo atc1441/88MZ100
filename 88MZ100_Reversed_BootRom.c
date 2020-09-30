@@ -1345,11 +1345,11 @@ void UART_cmd_handler(int mode)
         buffer = (char *)&uart_buffer->request_data;
         switch ( uart_cmd )
         {
-          case 2:                               // WRITE RAM
+          case 2:                               // READ RAM
             buffer = (char *)&uart_buffer->password_or_answer_buffer;
             uart_length += 4 * uart_buffer->length_data;
             goto LABEL_24;
-          case 3:                               // READM RAM or ROM
+          case 3:                               // WRITE RAM or ROM
 LABEL_24:
             Memory_read_or_write(*(_BYTE *)UART_cmd, uart_buffer->address, (int *)buffer, uart_buffer->length_data);
             break;
