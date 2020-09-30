@@ -10,7 +10,7 @@ import time
 import serial.tools.list_ports
 
 if(len(sys.argv)!=4):
-    print("Example: COM1 read file.bin, or COM1 write file.bin")
+    print("Example: COM1 read file.bin, or COM1 write file.bin, or COM1 write_flash file.bin")
     print("Not the right arguments but here are the... please wait...")
     ports_list = "possible UART ports: "
     for port in serial.tools.list_ports.comports():
