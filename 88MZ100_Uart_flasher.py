@@ -10,7 +10,7 @@ import time
 import serial.tools.list_ports
 
 if(len(sys.argv)!=4):
-    print("Example: COM1 read file.bin, or COM1 write file.bin")
+    print("Example: COM1 read file.bin, or COM1 write file.bin, or COM1 write_flash file.bin")
     print("Not the right arguments but here are the... please wait...")
     ports_list = "possible UART ports: "
     for port in serial.tools.list_ports.comports():
@@ -22,7 +22,7 @@ usedCom = sys.argv[1] #"COM14"
 read_or_write = sys.argv[2]
 file = sys.argv[3]
 usedBaud = 115200
-serialPort = serial.Serial(usedCom, usedBaud, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout=1)
+serialPort = serial.Serial(usedCom, usedBaud, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout=5)
 print('Using port: {}'.format(usedCom))
 
 bootloader_password = 0xffffffff
@@ -45,7 +45,7 @@ def send_cmd(cmd):
     global uart_ceck
     uart_ceck ^= 0x40
     cmd[2] = uart_ceck
-    #print(' '.join(format(x, '02x') for x in cmd))
+    print(' '.join(format(x, '02x') for x in cmd))
     serialPort.write(cmd)
 
 def wait_for_prompt():
@@ -98,6 +98,9 @@ def reset_chip():
     
 def erase_flash():
     return run_address(0x666)
+    
+def erase_flash_custom():
+    return get_cmd(8)
 
 def flash_file(filename):
     print("Opening file " + filename)
@@ -123,6 +126,49 @@ def flash_file(filename):
         uart_receive_handler(4)
     print("Running fimrware from: " + hex(entry_point))
     send_cmd(run_address(entry_point))
+        
+def flash_file_flash(filename):
+    print("Opening file " + filename)
+    in_file = open(filename, "rb")
+    data = bytearray(in_file.read())
+    filesize = len(data)
+    in_file.close()
+    print("file size: "+str(filesize))
+    entry_point = bytes_to_int(data[4:8])
+    print("entry point: "+ hex(entry_point))
+    
+    #adding firmware header here
+    
+    header =  to_byte(0x00000000)
+    header += to_byte(0xCCCC0124)
+    header += to_byte(filesize)
+    header += to_byte(0xFFEE7F07)
+    header += to_byte(0xFFFFFFFF)
+    header += to_byte(0x100000)
+    header += to_byte(entry_point)
+    header += to_byte(0x4D52564C)
+    filesize+=32
+    data = header+data
+    
+    block_size = 80 # bytes per sending
+    cur_address = 0
+    while(filesize-cur_address>0):
+        if(filesize-cur_address>block_size):
+            cur_size = block_size
+        else:
+            cur_size = filesize-cur_address
+        cur_data = data[cur_address:cur_address+cur_size]
+        print("Current address: " + hex(cur_address))
+        send_cmd(write_memory(cur_address,cur_data))
+        cur_address+=cur_size
+        uart_receive_handler(4)
+    print("Rebooting to new firmware")
+    send_cmd(reset_chip())
+        
+def flash_erase():
+    print("Erasing flash now")
+    send_cmd(erase_flash_custom())
+    uart_receive_handler(4)
 
 def dump_flash(filename):
     block_size = 128 # bytes per request
@@ -134,13 +180,32 @@ def dump_flash(filename):
         file.close() 
 
 serialPort.write(to_byte(0x3A,1))
+time.sleep(0.4)
 print("Waiting for boot promt, please reset the chip") 
 wait_for_prompt()
 uart_flush()
             
 if(read_or_write=='read'):
     dump_flash('read_' + file)
+    
 elif(read_or_write=='write'):
     flash_file(file)
+    
+elif(read_or_write=='write_flash'):
+    flash_file("second_stage_bootloader.bin")
+    if(uart_receive_handler(8)[1:].decode('utf-8') == "ATCboot"):
+        print("Second stage bootloader started");
+        uart_ceck = 0x00
+        flash_erase()
+        flash_file_flash(file)
 
+data_str = ""
+while(1):
+    while(serialPort.inWaiting()>0):
+        data_str += serialPort.read(serialPort.inWaiting()).decode('utf-8')
+        if(data_str.endswith("\n")):
+            print(data_str)
+            data_str = ""
+        
+        
 serialPort.close()
