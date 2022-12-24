@@ -96,9 +96,9 @@ Little endian so its switched!
 8 times uint32_t
 
 0x20125030 = 00 00 00 00 = CRC if used, or check if flash empty
-0x20125034 = 23 01 CC CC = CONFIG 1
+0x20125034 = FF FF FF FF = CONFIG 1
 0x20125038 = 44 C6 00 00 = Length of image counts after header
-0x2012503C = 07 7F EE FF = CONFIG 2
+0x2012503C = FF FF EE FF = CONFIG 2
 
 0x20125040 = FF FF FF FF = Password, if not this then SWD is disabled and UART bootloader needs password to work
 0x20125044 = 00 00 10 00 = RAM Loading point 0x100000
@@ -114,7 +114,7 @@ CONFIG_1
 6:0 = 0-127 * 16 QSPI Prescaler
 
 CONFIG_2
-31:24 = Reserved
+31:24 = BaudRate inversed default 0xFF
 23:16 = BaudRate inversed default 0xEE
 15:14 = 0-2 * 8 Enable custom Boot delay
 13:8 = Reserved

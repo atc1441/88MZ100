@@ -9,8 +9,48 @@ import os
 import time
 import serial.tools.list_ports
 
+def bytes_to_int(bytes):
+    result = 0
+    for b in range(3,-1,-1):
+        result = result * 256 + int(bytes[b])
+    return result
+   
+def to_byte(input,number=4):
+    return input.to_bytes(number, byteorder = 'little')
+        
+def create_full_fw(filename):
+    print("Opening file " + filename)
+    in_file = open(filename, "rb")
+    data = bytearray(in_file.read())
+    filesize = len(data)
+    in_file.close()
+    print("file size: "+str(filesize))
+    entry_point = bytes_to_int(data[4:8])
+    print("entry point: "+ hex(entry_point))
+    
+    #adding firmware header here    
+    header =  to_byte(0x00000000)
+    header += to_byte(0xFFFFFFFF)
+    header += to_byte(filesize)
+    header += to_byte(0xFFEEFFFF)
+    header += to_byte(0xFFFFFFFF)
+    header += to_byte(0x100000)
+    header += to_byte(entry_point)
+    header += to_byte(0x4D52564C)
+    data = header+data
+    file = open("full_"+filename,"wb") 
+    file.write(data) 
+    file.close()  
+
+#doing this testing here so we dont need a UART
+if(len(sys.argv)==3 and sys.argv[1] =='img'):
+    create_full_fw(sys.argv[2])
+    exit()
+ 
+     
 if(len(sys.argv)!=4):
     print("Example: COM1 read file.bin, or COM1 write file.bin, or COM1 write_flash file.bin")
+    print("To create an OTA file use: img file.bin")
     print("Not the right arguments but here are the... please wait...")
     ports_list = "possible UART ports: "
     for port in serial.tools.list_ports.comports():
@@ -25,18 +65,9 @@ usedBaud = 115200
 serialPort = serial.Serial(usedCom, usedBaud, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, timeout=5)
 print('Using port: {}'.format(usedCom))
 
-bootloader_password = 0xffffffff
+bootloader_password = 0xffffff01
 uart_ceck = 0x00
 
-def bytes_to_int(bytes):
-    result = 0
-    for b in range(3,-1,-1):
-        result = result * 256 + int(bytes[b])
-    return result
-    
-def to_byte(input,number=4):
-    return input.to_bytes(number, byteorder = 'little')
-    
 def get_cmd(cmd,length=0,address=0,plus_size=0):
     return_data = to_byte(cmd,1) + to_byte(0x00,1) + to_byte(length,1) + to_byte(bootloader_password) + to_byte(address)
     return bytearray([len(return_data)+plus_size]) + return_data
@@ -140,9 +171,9 @@ def flash_file_flash(filename):
     #adding firmware header here
     
     header =  to_byte(0x00000000)
-    header += to_byte(0xCCCC0124)
+    header += to_byte(0xFFFFFFFF)
     header += to_byte(filesize)
-    header += to_byte(0xFFEE7F07)
+    header += to_byte(0xFFEEFFFF)
     header += to_byte(0xFFFFFFFF)
     header += to_byte(0x100000)
     header += to_byte(entry_point)
@@ -164,7 +195,7 @@ def flash_file_flash(filename):
         uart_receive_handler(4)
     print("Rebooting to new firmware")
     send_cmd(reset_chip())
-        
+    
 def flash_erase():
     print("Erasing flash now")
     send_cmd(erase_flash_custom())
@@ -181,10 +212,13 @@ def dump_flash(filename):
 
 serialPort.write(to_byte(0x3A,1))
 time.sleep(0.4)
+serialPort.dtr = 0
+serialPort.rts = 0
 print("Waiting for boot promt, please reset the chip") 
 wait_for_prompt()
 uart_flush()
             
+    
 if(read_or_write=='read'):
     dump_flash('read_' + file)
     
@@ -198,14 +232,17 @@ elif(read_or_write=='write_flash'):
         uart_ceck = 0x00
         flash_erase()
         flash_file_flash(file)
-
+    
 data_str = ""
 while(1):
     while(serialPort.inWaiting()>0):
-        data_str += serialPort.read(serialPort.inWaiting()).decode('utf-8')
-        if(data_str.endswith("\n")):
-            print(data_str)
-            data_str = ""
-        
+        try:
+            data_str += serialPort.read(serialPort.inWaiting()).decode('utf-8')
+            if(data_str.endswith("\n")):
+                print(data_str)
+                data_str = ""
+        except:
+            print("Error")
+            
         
 serialPort.close()
