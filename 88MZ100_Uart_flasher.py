@@ -239,7 +239,7 @@ while(1):
         try:
             data_str += serialPort.read(serialPort.inWaiting()).decode('utf-8')
             if(data_str.endswith("\n")):
-                print(data_str)
+                print(data_str, end = '')
                 data_str = ""
         except:
             print("Error")
