@@ -370,12 +370,14 @@ void nfc_i2c_init()
     i2c_receive_one_byte(&test_byte, i2c_address, 0, 1, 0);
     nfc_available = test_byte == WHO_AM_I;
     if (nfc_available)
+    {
         nfc_erase();
+        nfc_set_default_config();
+    }
     // printf("I2C_CheckForNfcConnection = %d test_buffer = 0x%x \r\n", nfc_available, test_byte);
 
     /*if (0) // Test SRAM HERE
     {
-        nfc_set_default_config();
 
         printf("Writing now to SRAM of the NFC Chip\r\n");
 
