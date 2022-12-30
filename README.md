@@ -35,6 +35,11 @@ Luckily the 88MZ100 does offer an ROM Based UART Bootloader, this means only an 
 Connect the TXD and RXD Wires to the Testpoints of the Price tag. Either Connect the DTR wire of your USB to UART Converter to Reset or use a Button/Tweezer to bridge reset to ground.
 Start the 88MZ100 Flashing tool and wait till it prompts you to reset the SOC, the upload will then start.
 
+## MAC Settings
+
+Since the Custom firmware and Station is working on a MAC based identification it is needed to set a custom MAC to your Display.
+To do so you can either change a default one in the main.c at "SW_DEFAULT_MAC" before compiling or you can edit the compiled main.bin at an offset of 0x148 (8 following bytes, reversed order) via an HEX Editor Like [HxD](https://mh-nexus.de/en/hxd/).
+This set MAC will be used on first Boot by the Firmware to write it at the correct position in flash. Changing it in the OTA file will not change the MAC.
 
 Here is a YouTube video that shows the general function https://youtu.be/DRuVUtqFqcg
 
