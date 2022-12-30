@@ -1053,7 +1053,7 @@ int main(void)
     GPIO_PinModeConfig(NFC_POWER, PINMODE_DEFAULT);
     GPIO_PinMuxFun(NFC_POWER, 0);
     GPIO_SetPinDir(NFC_POWER, GPIO_OUTPUT);
-    GPIO_WritePinOutput(NFC_POWER, 0);
+    GPIO_WritePinOutput(NFC_POWER, 1);// Better power NFC up so IRQ will work unpowered later
     //** GPIOS
     //** RTC
     CLK_Xtal32MEnable(CLK_OSC_INTERN);
