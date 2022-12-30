@@ -1,0 +1,1 @@
+pyinstaller --onefile 88MZ100_Uart_flasher.py
