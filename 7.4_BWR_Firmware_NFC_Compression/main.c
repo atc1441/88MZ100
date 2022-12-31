@@ -1164,6 +1164,7 @@ int main(void)
         if (prvApplyUpdateIfNeeded(&settings))
         {
             printf("reboot post-update\r\n");
+            (*(unsigned int *)0x130400) = 0xffffffff;
             sleepDuration = 100; // reboot for a little bit
         }
         else

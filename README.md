@@ -16,7 +16,7 @@ Many infos about what all this is even about can be read at the [ZBS_Flasher](ht
 
 Currently the following Price tags are supported:
 
-- 7.4" BWR With NFC and Zigbee [7.4_BWR_Firmware_NFC_Compression](7.4_BWR_Firmware_NFC_Compression)
+- 7.4" 604x384 BWR With NFC and Zigbee [7.4_BWR_Firmware_NFC_Compression](7.4_BWR_Firmware_NFC_Compression) 
 
 <a href="pictures/74_pinout.jpg"><img width="250" alt="7.4 Pinout" src="pictures/74_pinout.jpg"></a>
 
@@ -40,6 +40,12 @@ Start the 88MZ100 Flashing tool and wait till it prompts you to reset the SOC, t
 Since the Custom firmware and Station is working on a MAC based identification it is needed to set a custom MAC to your Display.
 To do so you can either change a default one in the main.c at "SW_DEFAULT_MAC" before compiling or you can edit the compiled main.bin at an offset of 0x148 (8 following bytes, reversed order) via an HEX Editor Like [HxD](https://mh-nexus.de/en/hxd/).
 This set MAC will be used on first Boot by the Firmware to write it at the correct position in flash. Changing it in the OTA file will not change the MAC.
+
+## NFC
+
+Some Price tags do have an NFC Tag Chip on the PCB, this can be used to directly upload images to the E-Paper screen via an Android Smartphone, the compatible Android App can be found here: [ATC_NFC_Writer](https://play.google.com/store/apps/details?id=com.atcnetz.de.atc_nfc_writer)
+
+The image you select must fit with the E-Paper Price tags screen, for example the 7.4" needs an 640x384 Pixel Monochrom .bmp to also upload RED it is needed to convert an 24bit BMP to the 1bppR format via the [bmp2grays](https://github.com/danielkucera/epaper-station/blob/master/bmp2grays.py) converter.
 
 Here is a YouTube video that shows the general function https://youtu.be/DRuVUtqFqcg
 
