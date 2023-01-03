@@ -167,6 +167,10 @@ struct ChunkInfo {
 
 #define HW_TYPE_74_INCH_BWR						(40)
 #define HW_TYPE_74_INCH_BWR_ROM_VER_OFST		(0x0160)
+#define HW_TYPE_58_INCH_BWR						(41)
+#define HW_TYPE_58_INCH_BWR_ROM_VER_OFST		(0x0160)
+#define HW_TYPE_42_INCH_BWR						(42)
+#define HW_TYPE_42_INCH_BWR_ROM_VER_OFST		(0x0160)
 
 
 
