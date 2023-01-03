@@ -29,7 +29,6 @@
 #include "gpio.h"
 #include "compression.h"
 
-
 #define SW_VER_CURRENT (0x0000011300000000ull) // top 16 bits are off limits, xxxx.VV.tt.vvvv.mmmm means version V.t.v.m
 #define SW_DEFAULT_MAC (0x0000000000000014ull)
 
@@ -340,12 +339,14 @@ static void uiPrvDrawBitmap(uint32_t address, uint32_t size)
 
     if (bmp.sig[0] == 0x1F || bmp.sig[1] == 0x8b)
     {
+        char error_reason[100];
+        memset(error_reason, 0x00, sizeof(error_reason));
         printf("We received a compressed image, lets decompress it.\r\n");
-        size = decompress_file(address, size, EEPROM_UPDATE_START, EEPROM_UPDATE_LEN); // Use the OTA so save file temporarly
+        size = decompress_file(address, size, EEPROM_UPDATE_START + sizeof(struct EepromImageHeader), EEPROM_UPDATE_LEN - sizeof(struct EepromImageHeader), error_reason); // Use the OTA so save file temporarly
         if (size == 0)
         {
             printf("Decompression failed!!!\r\n");
-            uiPrvFullscreenMsg("Decompression failed!!!", NULL, fwVerString());
+            uiPrvFullscreenMsg("Decompression failed!!!", error_reason, fwVerString());
             return;
         }
         FLASH_Read(0, address, (uint8_t *)&bmp, sizeof(struct BitmapFileHeader));
@@ -1053,7 +1054,7 @@ int main(void)
     GPIO_PinModeConfig(NFC_POWER, PINMODE_DEFAULT);
     GPIO_PinMuxFun(NFC_POWER, 0);
     GPIO_SetPinDir(NFC_POWER, GPIO_OUTPUT);
-    GPIO_WritePinOutput(NFC_POWER, 1);// Better power NFC up so IRQ will work unpowered later
+    GPIO_WritePinOutput(NFC_POWER, 1); // Better power NFC up so IRQ will work unpowered later
     //** GPIOS
     //** RTC
     CLK_Xtal32MEnable(CLK_OSC_INTERN);
@@ -1087,7 +1088,7 @@ int main(void)
     {
         (*(unsigned int *)0x130400) = 0x11223344;
 
-        nfc_i2c_init();// This is only needed on a complete reboot
+        nfc_i2c_init(); // This is only needed on a complete reboot
 
         if (reset_reason == 5)
         {

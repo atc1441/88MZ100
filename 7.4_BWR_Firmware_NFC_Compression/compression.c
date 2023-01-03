@@ -23,7 +23,7 @@ int callback_read_more_data(TINF_DATA *d)
     return FLASH_ByteRead(FLASH_NORMAL_READ, current_in_pos++);
 }
 
-uint32_t decompress_file(uint32_t address_in, uint32_t size_compressed, uint32_t address_temp, uint32_t max_len_temp)
+uint32_t decompress_file(uint32_t address_in, uint32_t size_compressed, uint32_t address_temp, uint32_t max_len_temp, char error_reason[100])
 {
     FLASH_Read(0, address_in - sizeof(struct EepromImageHeader), (uint8_t *)&backup_header, sizeof(struct EepromImageHeader)); // Save the image header to write it back later
     int res;
@@ -35,6 +35,13 @@ uint32_t decompress_file(uint32_t address_in, uint32_t size_compressed, uint32_t
     FLASH_Read(0, address_in + size_compressed - 4, (uint8_t *)&decomp_len, 4); // Read the expected decompressed len
     printf("Compressed size is: %i\r\n", size_compressed);
     printf("Decompressed size is: %i\r\n", decomp_len);
+
+    if (decomp_len > max_len_temp)
+    {
+        printf("Error decompiled file will get too big\r\n");
+        sprintf(error_reason, "Decomp file too big %i", decomp_len);
+        return 0;
+    }
 
     decomp_left = decomp_len + 1;
     uzlib_init();
@@ -48,6 +55,7 @@ uint32_t decompress_file(uint32_t address_in, uint32_t size_compressed, uint32_t
     if (res != TINF_OK)
     {
         printf("Error parsing header: %d\r\n", res);
+        sprintf(error_reason, "Error parsing header %i", res);
         return 0;
     }
     printf("Header parsed !\r\n");
@@ -76,12 +84,14 @@ uint32_t decompress_file(uint32_t address_in, uint32_t size_compressed, uint32_t
         if (res != TINF_OK)
         {
             printf("Some error inner decomp %i\r\n", res);
+            sprintf(error_reason, "Inner decomp error %i", res);
             return 0;
         }
     }
     if (res != TINF_DONE)
     {
         printf("Some error in decomp %i\r\n", res);
+        sprintf(error_reason, "Decomp error %i", res);
         return 0;
     }
     printf("Decompression done\r\n");
