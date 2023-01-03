@@ -21,6 +21,7 @@ only: clean compile create_ota_img
 uart: clean compile flash_uart
 
 compile:
+	@mkdir -p build
 	@$(AS) -mcpu=cortex-m3 --gdwarf-2 -mthumb-interwork -o build/startup.o startup.S	
 
 	@$(CC) $(CC_FlAGS) -c core_cm3.c         -o build/core_cm3.o
