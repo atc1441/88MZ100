@@ -13,7 +13,7 @@ CC_END_FLAGS=-lc -lnosys -L. -T mz100.ld -fPIE --specs=nosys.specs -mcpu=cortex-
 C_SOURCES :=$(wildcard *.c)
 C_EXECUTABLE :=$(C_SOURCES:.c=)
 
-COMPORT = COM14
+COMPORT = COM7
 		
 
 build: clean compile create_ota_img flash_uart_flash
