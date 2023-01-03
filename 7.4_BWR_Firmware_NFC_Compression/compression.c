@@ -36,7 +36,7 @@ uint32_t decompress_file(uint32_t address_in, uint32_t size_compressed, uint32_t
     printf("Compressed size is: %i\r\n", size_compressed);
     printf("Decompressed size is: %i\r\n", decomp_len);
 
-    if (decomp_len > max_len_temp)
+    if (decomp_len + 1 > max_len_temp)
     {
         printf("Error decompiled file will get too big\r\n");
         sprintf(error_reason, "Out too big %i of max %i bytes", decomp_len, max_len_temp);
