@@ -6,7 +6,7 @@ CC=$(ARMGCC)arm-none-eabi-gcc
 AS=$(ARMGCC)arm-none-eabi-as
 OBJCOPY=$(ARMGCC)arm-none-eabi-objcopy
 #-Wall 
-CC_WARNING_FLAGS=-Wall -Wformat=0 -Wattributes
+CC_WARNING_FLAGS=-Wall -Wformat=0 -Wattributes -Wstrict-aliasing=0
 CC_FlAGS=-mcpu=cortex-m3 -g -O0 -mthumb -fdata-sections -ffunction-sections -std=c99
 CC_END_FLAGS=-lc -lnosys -L. -T mz100.ld -fPIE --specs=nosys.specs -mcpu=cortex-m3 -mthumb -Wl,--gc-sections -O0 -flto -ffunction-sections -fdata-sections -DARM_GNU
 

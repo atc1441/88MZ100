@@ -21,49 +21,49 @@ void sub_102142(int a1)
     switch (a1)
     {
     case 15:
-        (*(unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
-        v1 = ((*(unsigned int *)0x4C010004) & 0xFFFFFFF) | 0x20000000;
+        (*(volatile unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
+        v1 = ((*(volatile unsigned int *)0x4C010004) & 0xFFFFFFF) | 0x20000000;
         goto LABEL_9;
     case 18:
-        (*(unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
-        v1 = ((*(unsigned int *)0x4C010004) & 0xFFFFFFF) | 0x10000000;
+        (*(volatile unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
+        v1 = ((*(volatile unsigned int *)0x4C010004) & 0xFFFFFFF) | 0x10000000;
         goto LABEL_9;
     case 20:
-        (*(unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
-        v1 = ((*(unsigned int *)0x4C010004) & 0xFFFFFFF) | 0x40000000;
+        (*(volatile unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
+        v1 = ((*(volatile unsigned int *)0x4C010004) & 0xFFFFFFF) | 0x40000000;
         goto LABEL_9;
     case 22:
-        (*(unsigned int *)0x4C010004) &= 0xFFFFFFFu;
-        v2 = ((*(unsigned int *)0x4C010040) & 0x3FFFFFFF) | 0x40000000;
+        (*(volatile unsigned int *)0x4C010004) &= 0xFFFFFFFu;
+        v2 = ((*(volatile unsigned int *)0x4C010040) & 0x3FFFFFFF) | 0x40000000;
         goto LABEL_7;
     case 24:
-        (*(unsigned int *)0x4C010004) &= 0xFFFFFFFu;
-        v2 = ((*(unsigned int *)0x4C010040) & 0x3FFFFFFF) | 0x80000000;
+        (*(volatile unsigned int *)0x4C010004) &= 0xFFFFFFFu;
+        v2 = ((*(volatile unsigned int *)0x4C010040) & 0x3FFFFFFF) | 0x80000000;
     LABEL_7:
-        (*(unsigned int *)0x4C010040) = v2;
+        (*(volatile unsigned int *)0x4C010040) = v2;
         return;
     case 25:
-        (*(unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
-        v1 = ((*(unsigned int *)0x4C010004) & 0xFFFFFFF) | 0x80000000;
+        (*(volatile unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
+        v1 = ((*(volatile unsigned int *)0x4C010004) & 0xFFFFFFF) | 0x80000000;
         goto LABEL_9;
     default:
-        (*(unsigned int *)0x4C01003C) = (*(unsigned int *)0x4C010040) & 0x3FFFFFFF;
-        v1 = (*(unsigned int *)0x4C010004) & 0xFFFFFFF;
+        (*(volatile unsigned int *)0x4C01003C) = (*(volatile unsigned int *)0x4C010040) & 0x3FFFFFFF;
+        v1 = (*(volatile unsigned int *)0x4C010004) & 0xFFFFFFF;
     LABEL_9:
-        (*(unsigned int *)0x4C010004) = v1;
+        (*(volatile unsigned int *)0x4C010004) = v1;
         return;
     }
 }
 
 int sub_102124()
 {
-    return ((*(unsigned int *)0x4C010008) >> 18) & 0x3F;
+    return ((*(volatile unsigned int *)0x4C010008) >> 18) & 0x3F;
 }
 
 void sub_10212E()
 {
-    (*(unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
-    (*(unsigned int *)0x4C010004) &= 0xFFFFFFFu;
+    (*(volatile unsigned int *)0x4C010040) &= 0x3FFFFFFFu;
+    (*(volatile unsigned int *)0x4C010004) &= 0xFFFFFFFu;
 }
 
 int get_register(int a1)
@@ -79,11 +79,11 @@ void set_register(uint32_t result, int a2)
 void fill_rx_regs()
 {
     unsigned int v0;
-    v0 = (*(unsigned int *)0xFFC);
-    (*(unsigned int *)0x4C010000) |= 0x20u;
-    (*(unsigned int *)0x4C010000) &= ~1u;
-    (*(unsigned int *)0x4C010000) |= 0x40u;
-    while (((*(unsigned int *)0x4C010008) & 0x1000000) == 0)
+    v0 = (*(volatile unsigned int *)0xFFC);
+    (*(volatile unsigned int *)0x4C010000) |= 0x20u;
+    (*(volatile unsigned int *)0x4C010000) &= ~1u;
+    (*(volatile unsigned int *)0x4C010000) |= 0x40u;
+    while (((*(volatile unsigned int *)0x4C010008) & 0x1000000) == 0)
         ;
     for (int i = 0; i < v0 >> 2; ++i)
         set_register(4 * i + 0x4C014000, *(uint32_t *)(4 * i + 0x1000));
@@ -133,8 +133,8 @@ void fill_rx_regs()
     set_register(0x4C015F34u, 0x2200FB75);
     set_register(0x4C015F38u, 0x7500E675);
     set_register(0x4C015F3Cu, 0x22F0EB);
-    (*(unsigned int *)0x4C010000) &= ~0x40u;
-    while (((*(unsigned int *)0x4C010008) & 0x1000000) != 0)
+    (*(volatile unsigned int *)0x4C010000) &= ~0x40u;
+    while (((*(volatile unsigned int *)0x4C010008) & 0x1000000) != 0)
         ;
 }
 
@@ -144,15 +144,15 @@ void sub_1021E6()
     unsigned int v1;
     unsigned int i;
 
-    v0 = (*(unsigned int *)0x4C01000C);
+    v0 = (*(volatile unsigned int *)0x4C01000C);
     v1 = get_register(0x130004);
-    (*(unsigned int *)0x4C010000) |= 4u;
-    while (((*(unsigned int *)0x4C010008) & 0x1000000) == 0)
+    (*(volatile unsigned int *)0x4C010000) |= 4u;
+    while (((*(volatile unsigned int *)0x4C010008) & 0x1000000) == 0)
         ;
     for (i = 0; i < v1; ++i)
         set_register(v0 + 4 * i + 0x4C014000, *(uint32_t *)(4 * i + 0x130008));
-    (*(unsigned int *)0x4C010000) &= ~4u;
-    while (((*(unsigned int *)0x4C010008) & 0x1000000) != 0)
+    (*(volatile unsigned int *)0x4C010000) &= ~4u;
+    while (((*(volatile unsigned int *)0x4C010008) & 0x1000000) != 0)
         ;
 }
 
@@ -162,18 +162,18 @@ void save_calib_in_ram()
     unsigned int v1;
     unsigned int i;
 
-    v0 = (*(unsigned int *)0x4C01000C) + 0x4C014000;
-    v1 = ((unsigned int)(uint8_t)((*(unsigned int *)0x4C010008) >> 2) + 3) >> 2;
+    v0 = (*(volatile unsigned int *)0x4C01000C) + 0x4C014000;
+    v1 = ((unsigned int)(uint8_t)((*(volatile unsigned int *)0x4C010008) >> 2) + 3) >> 2;
     set_register(0x130000u, 0x464C4147);
     set_register(0x130004u, v1);
-    (*(unsigned int *)0x4C01001C) = -5;
-    (*(unsigned int *)0x4C010000) |= 2u;
-    while (((*(unsigned int *)0x4C010008) & 0x1000000) == 0)
+    (*(volatile unsigned int *)0x4C01001C) = -5;
+    (*(volatile unsigned int *)0x4C010000) |= 2u;
+    while (((*(volatile unsigned int *)0x4C010008) & 0x1000000) == 0)
         ;
     for (i = 0; i < v1; ++i)
         set_register(4 * i + 0x130008, *(uint32_t *)(v0 + 4 * i));
-    (*(unsigned int *)0x4C010000) &= ~2u;
-    while (((*(unsigned int *)0x4C010008) & 0x1000000) != 0)
+    (*(volatile unsigned int *)0x4C010000) &= ~2u;
+    while (((*(volatile unsigned int *)0x4C010008) & 0x1000000) != 0)
         ;
 }
 
@@ -181,34 +181,34 @@ int inner_calibration()
 {
     int is_in_ram;
 
-    (*(unsigned int *)0x4C010000) |= 0x20u;
+    (*(volatile unsigned int *)0x4C010000) |= 0x20u;
     if (get_register(0x130000) == 0x464C4147)
     {
         is_in_ram = 1;
-        (*(unsigned int *)0x4C010000) |= 8u;
-        (*(unsigned int *)0x4C010000) &= ~0x10u;
+        (*(volatile unsigned int *)0x4C010000) |= 8u;
+        (*(volatile unsigned int *)0x4C010000) &= ~0x10u;
         sub_1021E6();
     }
     else
     {
         is_in_ram = 0;
-        (*(unsigned int *)0x4C010000) &= ~8u;
-        (*(unsigned int *)0x4C010000) |= 0x10u;
+        (*(volatile unsigned int *)0x4C010000) &= ~8u;
+        (*(volatile unsigned int *)0x4C010000) |= 0x10u;
     }
-    (*(unsigned int *)0x4C010018) = -1;
-    (*(unsigned int *)0x4C01001C) = -4;
-    (*(unsigned int *)0xE000E100) = 0x1000000;
-    (*(unsigned int *)0x4C010000) &= ~0x20u;
+    (*(volatile unsigned int *)0x4C010018) = -1;
+    (*(volatile unsigned int *)0x4C01001C) = -4;
+    (*(volatile unsigned int *)0xE000E100) = 0x1000000;
+    (*(volatile unsigned int *)0x4C010000) &= ~0x20u;
     while (calibration_irq_ocoured != 1)
         ;
     calibration_irq_ocoured = 0;
-    while (((*(unsigned int *)0x4C010008) & 2) == 0)
+    while (((*(volatile unsigned int *)0x4C010008) & 2) == 0)
     {
     }
     if (is_in_ram)
         return 2;
     int timeout = 10;
-    while (((*(unsigned int *)0x4C010008) & 2) == 0)
+    while (((*(volatile unsigned int *)0x4C010008) & 2) == 0)
     {
         if (timeout-- == 0)
         {
@@ -224,15 +224,15 @@ void set_zig_channel(int a1)
     unsigned int v2;
     unsigned int v3;
 
-    (*(unsigned int *)0x4C010004) = ((*(unsigned int *)0x4C010004) & 0xF0FFFFFF) | ((a1 & 0xF) << 24);
+    (*(volatile unsigned int *)0x4C010004) = ((*(volatile unsigned int *)0x4C010004) & 0xF0FFFFFF) | ((a1 & 0xF) << 24);
     v1 = (unsigned int *)(8 * a1 + 0x35A4);
     v2 = *v1++;
-    (*(unsigned int *)0x4C010024) = ((*(unsigned int *)0x4C010024) & 0xFC01FFFF) | (((v2 >> 8) & 0x1FF) << 17);
+    (*(volatile unsigned int *)0x4C010024) = ((*(volatile unsigned int *)0x4C010024) & 0xFC01FFFF) | (((v2 >> 8) & 0x1FF) << 17);
     v3 = *v1;
     v1 += 33;
-    (*(unsigned int *)0x4C010024) = ((*(unsigned int *)0x4C010024) & 0xFFFE0000) | (v3 & 0x1FFFF);
-    (*(unsigned int *)0x4C010030) = ((*(unsigned int *)0x4C010030) & 0xFC01FFFF) | (((*v1 >> 8) & 0x1FF) << 17);
-    (*(unsigned int *)0x4C010030) = ((*(unsigned int *)0x4C010030) & 0xFFFE0000) | (v1[1] & 0x1FFFF);
+    (*(volatile unsigned int *)0x4C010024) = ((*(volatile unsigned int *)0x4C010024) & 0xFFFE0000) | (v3 & 0x1FFFF);
+    (*(volatile unsigned int *)0x4C010030) = ((*(volatile unsigned int *)0x4C010030) & 0xFC01FFFF) | (((*v1 >> 8) & 0x1FF) << 17);
+    (*(volatile unsigned int *)0x4C010030) = ((*(volatile unsigned int *)0x4C010030) & 0xFFFE0000) | (v1[1] & 0x1FFFF);
 }
 
 void RF_calibration(int mode)
@@ -258,103 +258,103 @@ void RF_calibration(int mode)
 
 void __attribute__((interrupt)) PHY1_IRQHandler(void)
 {
-    (*(unsigned int *)0x4C010018) = 0xFFFFFFFF;
+    (*(volatile unsigned int *)0x4C010018) = 0xFFFFFFFF;
     calibration_irq_ocoured = 1;
 }
 
 void Zigbee_set_cal_values()
 {
-    (*(unsigned int *)0x4C000400) = 0x28C0;
-    (*(unsigned int *)0x4C000404) = 0x100800;
-    (*(unsigned int *)0x4C000408) = 0x800080;
-    (*(unsigned int *)0x4C00040C) = 0x145434CC;
-    (*(unsigned int *)0x4C000410) = 0x1D0E8;
-    (*(unsigned int *)0x4C000414) = 0x6555406;
-    (*(unsigned int *)0x4C000418) = 0xC13193D9;
-    (*(unsigned int *)0x4C00041C) = 0xD06A428;
-    (*(unsigned int *)0x4C000420) = 0x58B14289;
-    (*(unsigned int *)0x4C000424) = 0x54093012;
-    (*(unsigned int *)0x4C000428) = 0x44133AD5;
-    (*(unsigned int *)0x4C000438) = 0x25DF1;
-    (*(unsigned int *)0x4C00043C) = 0x1FC;
-    (*(unsigned int *)0x4C000440) = 0x2096824C;
+    (*(volatile unsigned int *)0x4C000400) = 0x28C0;
+    (*(volatile unsigned int *)0x4C000404) = 0x100800;
+    (*(volatile unsigned int *)0x4C000408) = 0x800080;
+    (*(volatile unsigned int *)0x4C00040C) = 0x145434CC;
+    (*(volatile unsigned int *)0x4C000410) = 0x1D0E8;
+    (*(volatile unsigned int *)0x4C000414) = 0x6555406;
+    (*(volatile unsigned int *)0x4C000418) = 0xC13193D9;
+    (*(volatile unsigned int *)0x4C00041C) = 0xD06A428;
+    (*(volatile unsigned int *)0x4C000420) = 0x58B14289;
+    (*(volatile unsigned int *)0x4C000424) = 0x54093012;
+    (*(volatile unsigned int *)0x4C000428) = 0x44133AD5;
+    (*(volatile unsigned int *)0x4C000438) = 0x25DF1;
+    (*(volatile unsigned int *)0x4C00043C) = 0x1FC;
+    (*(volatile unsigned int *)0x4C000440) = 0x2096824C;
 }
 
 void ZIGBEE_something_16()
 {
-    (*(unsigned int *)0x4C000828) = 0x90BD;
-    (*(unsigned int *)0x4C000830) = 0x10908000;
+    (*(volatile unsigned int *)0x4C000828) = 0x90BD;
+    (*(volatile unsigned int *)0x4C000830) = 0x10908000;
 }
 
 void ZIGBEE_set_filter_state(int a1)
 {
     unsigned int v1;
-    (*(unsigned int *)0x4C00084C) |= 0x2000u;
-    (*(unsigned int *)0x4C00084C) |= 0x1000u;
-    (*(unsigned int *)0x4C00084C) |= 0x800u;
+    (*(volatile unsigned int *)0x4C00084C) |= 0x2000u;
+    (*(volatile unsigned int *)0x4C00084C) |= 0x1000u;
+    (*(volatile unsigned int *)0x4C00084C) |= 0x800u;
     if (a1 == 1)
     {
-        (*(unsigned int *)0x4C00084C) |= 0x400u;
-        (*(unsigned int *)0x4C00084C) |= 0x200u;
-        (*(unsigned int *)0x4C00084C) &= ~0x100u;
-        (*(unsigned int *)0x4C00084C) |= 0x80u;
-        (*(unsigned int *)0x4C00084C) |= 0x40u;
-        (*(unsigned int *)0x4C00084C) |= 0x20u;
-        v1 = (*(unsigned int *)0x4C00084C) | 0x10;
+        (*(volatile unsigned int *)0x4C00084C) |= 0x400u;
+        (*(volatile unsigned int *)0x4C00084C) |= 0x200u;
+        (*(volatile unsigned int *)0x4C00084C) &= ~0x100u;
+        (*(volatile unsigned int *)0x4C00084C) |= 0x80u;
+        (*(volatile unsigned int *)0x4C00084C) |= 0x40u;
+        (*(volatile unsigned int *)0x4C00084C) |= 0x20u;
+        v1 = (*(volatile unsigned int *)0x4C00084C) | 0x10;
     }
     else
     {
-        (*(unsigned int *)0x4C00084C) &= ~0x400u;
-        (*(unsigned int *)0x4C00084C) &= ~0x200u;
-        (*(unsigned int *)0x4C00084C) &= ~0x100u;
-        (*(unsigned int *)0x4C00084C) &= ~0x80u;
-        (*(unsigned int *)0x4C00084C) |= 0x40u;
-        (*(unsigned int *)0x4C00084C) |= 0x20u;
-        v1 = (*(unsigned int *)0x4C00084C) & 0xFFFFFFEF;
+        (*(volatile unsigned int *)0x4C00084C) &= ~0x400u;
+        (*(volatile unsigned int *)0x4C00084C) &= ~0x200u;
+        (*(volatile unsigned int *)0x4C00084C) &= ~0x100u;
+        (*(volatile unsigned int *)0x4C00084C) &= ~0x80u;
+        (*(volatile unsigned int *)0x4C00084C) |= 0x40u;
+        (*(volatile unsigned int *)0x4C00084C) |= 0x20u;
+        v1 = (*(volatile unsigned int *)0x4C00084C) & 0xFFFFFFEF;
     }
-    (*(unsigned int *)0x4C00080C) = ((*(unsigned int *)0x4C00080C) & 0xF3FFFFFF) + 0x4000000;
-    (*(unsigned int *)0x4C00084C) = v1 | 0xF;
+    (*(volatile unsigned int *)0x4C00080C) = ((*(volatile unsigned int *)0x4C00080C) & 0xF3FFFFFF) + 0x4000000;
+    (*(volatile unsigned int *)0x4C00084C) = v1 | 0xF;
 }
 
 void ZIGBEE_something_13(int result)
 {
-    (*(unsigned int *)0x4C00003C) = result;
+    (*(volatile unsigned int *)0x4C00003C) = result;
 }
 
 void sub_101D40(int result)
 {
-    (*(unsigned int *)0x4C000034) = result;
+    (*(volatile unsigned int *)0x4C000034) = result;
 }
 
 void sub_101D48(int a1)
 {
-    (*(unsigned int *)0x4C000800) = (*(unsigned int *)0x4C000800) & 0xFFFFFDFF;
-    (*(unsigned int *)0x4C000804) = ((*(unsigned int *)0x4C000804) & 0xFFFFFFFC) | (a1 & 3);
-    (*(unsigned int *)0x4C000800) |= 0x8000u;
+    (*(volatile unsigned int *)0x4C000800) = (*(volatile unsigned int *)0x4C000800) & 0xFFFFFDFF;
+    (*(volatile unsigned int *)0x4C000804) = ((*(volatile unsigned int *)0x4C000804) & 0xFFFFFFFC) | (a1 & 3);
+    (*(volatile unsigned int *)0x4C000800) |= 0x8000u;
 }
 
 void sub_101D10()
 {
-    (*(unsigned int *)0x4C000000) |= 2u;
-    (*(unsigned int *)0x4C001020) = 15;
+    (*(volatile unsigned int *)0x4C000000) |= 2u;
+    (*(volatile unsigned int *)0x4C001020) = 15;
     delay_us(10u);
-    (*(unsigned int *)0x4C000000) &= ~2u;
-    (*(unsigned int *)0x4C001020) = 0;
-    (*(unsigned int *)0x4C00002C) = -1;
-    (*(unsigned int *)0x4C00003C) = -1;
-    (*(unsigned int *)0x4C00004C) = -1;
+    (*(volatile unsigned int *)0x4C000000) &= ~2u;
+    (*(volatile unsigned int *)0x4C001020) = 0;
+    (*(volatile unsigned int *)0x4C00002C) = -1;
+    (*(volatile unsigned int *)0x4C00003C) = -1;
+    (*(volatile unsigned int *)0x4C00004C) = -1;
 }
 
 void ZIGBEE_something_24()
 {
     sub_101D10();
-    (*(unsigned int *)0x4C000800) |= 0x800000u;
-    (*(unsigned int *)0x4C000808) |= 0x10000000u;
-    (*(unsigned int *)0x4C000808) &= ~0x2000000u;
-    (*(unsigned int *)0x4C00081C) &= ~1u;
+    (*(volatile unsigned int *)0x4C000800) |= 0x800000u;
+    (*(volatile unsigned int *)0x4C000808) |= 0x10000000u;
+    (*(volatile unsigned int *)0x4C000808) &= ~0x2000000u;
+    (*(volatile unsigned int *)0x4C00081C) &= ~1u;
     ZIGBEE_something_13(-1);
     sub_101D40(-16);
-    (*(unsigned int *)0xE000E100) = 0x4000000;
+    (*(volatile unsigned int *)0xE000E100) = 0x4000000;
     sub_101D48(0);
 }
 
@@ -365,10 +365,10 @@ void ZIGBEE_something_17(unsigned int a1, int a2, int a3, int a4, uint32_t *a5, 
     int v12;          // r0
     unsigned int v13; // r4
 
-    v10 = ((*(unsigned int *)0x4C000830) >> 18) & 0x3F;
+    v10 = ((*(volatile unsigned int *)0x4C000830) >> 18) & 0x3F;
     if (a1 < v10)
     {
-        v11 = 4 * (((*(unsigned int *)0x4C000828) >> 10) & 0x3FF) + 1275071488;
+        v11 = 4 * (((*(volatile unsigned int *)0x4C000828) >> 10) & 0x3FF) + 1275071488;
         v12 = get_register((a1 & 0xFFFFFFFC) + v11);
         set_register((a1 & 0xFFFFFFFC) + v11, (v12 & ~(255 << ((8 * a1) & 0x1F))) | (a2 << ((8 * a1) & 0x1F)));
         v13 = ((v10 + 3) & 0xFFFFFFFC) + v11 + 16 * a1;
@@ -382,17 +382,17 @@ void ZIGBEE_something_17(unsigned int a1, int a2, int a3, int a4, uint32_t *a5, 
 
 int get_crc_or_ack_rx()
 {
-    return (*(unsigned int *)0x4C000846);
+    return (*(volatile unsigned int *)0x4C000846);
 }
 
 int get_crc_or_ack_rx1()
 {
-    return (uint8_t)((*(unsigned int *)0x4C000834) >> 9);
+    return (uint8_t)((*(volatile unsigned int *)0x4C000834) >> 9);
 }
 
 void __attribute__((interrupt)) PHY3_IRQHandler(void)
 {
-    int irq_reason = (*(unsigned int *)0x4C000804) & 3;
+    int irq_reason = (*(volatile unsigned int *)0x4C000804) & 3;
     sub_101D40(0xFFFFFFFF);
     if (irq_reason)
     {
@@ -406,9 +406,9 @@ void __attribute__((interrupt)) PHY3_IRQHandler(void)
     else
     {
         int rx_posi = 0;
-        rx_len = (*(unsigned int *)0x4C000444) & 0x3ff;
+        rx_len = (*(volatile unsigned int *)0x4C000444) & 0x3ff;
         for (int i = 0; i < ((rx_len - 1) / 4 + 1); ++i)
-            *((uint32_t *)&rx_buffer[0] + rx_posi++) = (*(unsigned int *)0x4C001004);
+            *((uint32_t *)&rx_buffer[0] + rx_posi++) = (*(volatile unsigned int *)0x4C001004);
         new_rx = 1;
     }
     ZIGBEE_something_13(-1);
@@ -432,19 +432,19 @@ uint8_t Zigbee_tx_buffer(uint8_t tx_buffer[], int len)
     int v7 = 0xFFFFFF;
     uint8_t ack_expected = (tx_buffer[0] & 0x20) != 0;
     sub_101D10();
-    (*(unsigned int *)0x4C00081C) &= ~1u;
-    (*(unsigned int *)0x4C000804) = (*(unsigned int *)0x4C000804) & 0xFFFFFFF3;
-    (*(unsigned int *)0x4C000808) = ((*(unsigned int *)0x4C000808) & 0xFE00FFFF) | ((len & 0x1FF) << 16);
+    (*(volatile unsigned int *)0x4C00081C) &= ~1u;
+    (*(volatile unsigned int *)0x4C000804) = (*(volatile unsigned int *)0x4C000804) & 0xFFFFFFF3;
+    (*(volatile unsigned int *)0x4C000808) = ((*(volatile unsigned int *)0x4C000808) & 0xFE00FFFF) | ((len & 0x1FF) << 16);
     for (int i = 0; i < ((len - 1) / 4 + 1); i++)
     {
-        (*(unsigned int *)0x4C001000) = *(uint32_t *)&tx_buffer[i * 4];
+        (*(volatile unsigned int *)0x4C001000) = *(uint32_t *)&tx_buffer[i * 4];
     }
-    (*(unsigned int *)0x4C000808) = ((*(unsigned int *)0x4C000808) & 0xFDFFFFFF) | ((ack_expected & 1) << 25);
-    (*(unsigned int *)0x4C000804) = ((*(unsigned int *)0x4C000804) & 0xFF00FFFF) | ((uint8_t)0 << 16);
-    (*(unsigned int *)0x4C000800) &= ~0x800000u;
+    (*(volatile unsigned int *)0x4C000808) = ((*(volatile unsigned int *)0x4C000808) & 0xFDFFFFFF) | ((ack_expected & 1) << 25);
+    (*(volatile unsigned int *)0x4C000804) = ((*(volatile unsigned int *)0x4C000804) & 0xFF00FFFF) | ((uint8_t)0 << 16);
+    (*(volatile unsigned int *)0x4C000800) &= ~0x800000u;
     ZIGBEE_something_13(-1);
     sub_101D40(0xFFFFFFF0);
-    (*(unsigned int *)0xE000E100) = 0x4000000;
+    (*(volatile unsigned int *)0xE000E100) = 0x4000000;
     zigbee_tx_done = 0;
     sub_101D48(3);
     while (--v7)
@@ -486,23 +486,23 @@ void ZIGBEE_set_filter(uint16_t dest_pan, uint16_t source_addr, uint32_t own_mac
 void radioSetTxPower(char result)
 {
     // Sets TX power to 40 -> +10dBm
-    (*(unsigned int *)0x4C000404) |= 2u;
-    (*(unsigned int *)0x4C000400) = ((*(unsigned int *)0x4C000400) & 0xFFFFC0FF) | ((result & 0x3F) << 8);
+    (*(volatile unsigned int *)0x4C000404) |= 2u;
+    (*(volatile unsigned int *)0x4C000400) = ((*(volatile unsigned int *)0x4C000400) & 0xFFFFC0FF) | ((result & 0x3F) << 8);
 }
 
 void RF_init(uint8_t channel)
 {
     channel -= 11;
     // Seems to enable something in the radio, only with this radio start correctly
-    (*(unsigned int *)0x4A08005C) &= 0xFFFFFFFE;
+    (*(volatile unsigned int *)0x4A08005C) &= 0xFFFFFFFE;
     // RF CALIB INIT
     RF_calibration(18);
-    (*(unsigned int *)0x4C010000) = ((*(unsigned int *)0x4C010000) & 0xFFFF1FFF) | (1 << 13);
-    (*(unsigned int *)0x4C000810) |= 0x10000000u;
-    (*(unsigned int *)0x4C00040C) = ((*(unsigned int *)0x4C00040C) & 0xFFFFFF9F) | (32);
-    (*(unsigned int *)0x4C00040C) = (*(unsigned int *)0x4C00040C) & 0xFFFFF87F;
-    (*(unsigned int *)0x4C000810) = ((*(unsigned int *)0x4C000810) & 0xF800FFFF) | 0x800000;
-    (*(unsigned int *)0x4C00080C) = ((*(unsigned int *)0x4C00080C) & 0xFFFFFF00) + 125;
+    (*(volatile unsigned int *)0x4C010000) = ((*(volatile unsigned int *)0x4C010000) & 0xFFFF1FFF) | (1 << 13);
+    (*(volatile unsigned int *)0x4C000810) |= 0x10000000u;
+    (*(volatile unsigned int *)0x4C00040C) = ((*(volatile unsigned int *)0x4C00040C) & 0xFFFFFF9F) | (32);
+    (*(volatile unsigned int *)0x4C00040C) = (*(volatile unsigned int *)0x4C00040C) & 0xFFFFF87F;
+    (*(volatile unsigned int *)0x4C000810) = ((*(volatile unsigned int *)0x4C000810) & 0xF800FFFF) | 0x800000;
+    (*(volatile unsigned int *)0x4C00080C) = ((*(volatile unsigned int *)0x4C00080C) & 0xFFFFFF00) + 125;
     Zigbee_set_cal_values();
 
     radioSetTxPower(40);

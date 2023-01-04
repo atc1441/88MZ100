@@ -989,9 +989,9 @@ int main(void)
     uint32_t reset_reason = PMU_GetLastResetCause();
     uint8_t pwr_mode_at_boot = PMU->PWR_MODE.BF.PWR_MODE;
 
-    (*(unsigned int *)0x20124000) = 0x100004;   // On WARM RESET: Goto this address. -> entry
-    (*(unsigned int *)0xE000ED08) = 0x20100000; // Vector table in RAM and offset 0x4000
-    (*(unsigned int *)0xE000E41A) = 0x40;
+    (*(volatile unsigned int *)0x20124000) = 0x100004;   // On WARM RESET: Goto this address. -> entry
+    (*(volatile unsigned int *)0xE000ED08) = 0x20100000; // Vector table in RAM and offset 0x4000
+    (*(volatile unsigned int *)0xE000E41A) = 0x40;
 
     CLK_SystemClkInit(CLK_SYS_XTAL64M, CLK_SYS_64M);
     CLK_Xtal32MEnable(CLK_OSC_INTERN);
@@ -1020,13 +1020,13 @@ int main(void)
     UART_FIFOConfig(1, &uartFifo);
     // UART 1 DEBUG OUT
 
-    if (!(~(*(unsigned int *)0x4A080000) << 30))
+    if (!(~(*(volatile unsigned int *)0x4A080000) << 30))
     {
         NVIC_EnableIRQ(ExtPin5_IRQn);
         NVIC_EnableIRQ(RTC_IRQn);
     }
 
-    (*(unsigned int *)0x4A070004) = ((*(unsigned int *)0x4A070004) & 0xFFFFFFE0) + 2;
+    (*(volatile unsigned int *)0x4A070004) = ((*(volatile unsigned int *)0x4A070004) & 0xFFFFFFE0) + 2;
     PMU->PWR_MODE.BF.PWR_MODE = 2;
     uint32_t v0 = FLASH_WordRead(FLASH_NORMAL_READ, 4u);
     char v1;
@@ -1085,9 +1085,9 @@ int main(void)
     //** Get the real wakeup reason
     printf("Rst reason: %i\r\n", reset_reason);
     uint32_t real_reason = 0;
-    if ((*(unsigned int *)0x130400) != 0x11223344)
+    if ((*(volatile unsigned int *)0x130400) != 0x11223344)
     {
-        (*(unsigned int *)0x130400) = 0x11223344;
+        (*(volatile unsigned int *)0x130400) = 0x11223344;
 
         nfc_i2c_init(); // This is only needed on a complete reboot
 
@@ -1161,7 +1161,7 @@ int main(void)
         if (prvApplyUpdateIfNeeded(&settings))
         {
             printf("reboot post-update\r\n");
-            (*(unsigned int *)0x130400) = 0xffffffff;
+            (*(volatile unsigned int *)0x130400) = 0xffffffff;
             sleepDuration = 100; // reboot for a little bit
         }
         else

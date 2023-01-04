@@ -149,7 +149,7 @@ extern volatile int rx_len;
 
 int32_t __attribute__((noinline)) commsRx(struct CommsInfo *info, void *data, uint8_t *fromMacP)
 {
-	uint8_t *buf = packet, nonce[13] = {}, fromMac[8];
+	uint8_t *buf = packet, nonce[13] = {}, fromMac[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 	uint32_t len, minNeedLen, hdrLen = 0;
 	struct MacFrameFromMaster *mfm;
 	struct MacFrameNormal *mfn;

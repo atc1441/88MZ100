@@ -153,7 +153,7 @@ void wait_busy_sleep(int a1)
         RTC_IntClr(RTC_INT_CNT_UPP);
         NIVC_some_IRQ(0);
         RTC_IntMask(RTC_INT_CNT_UPP, UNMASK);
-        (*(unsigned int *)0xE000E100) = 1;
+        (*(volatile unsigned int *)0xE000E100) = 1;
         RTC_SetCounterUppVal(0x7FFF * a1 / 0x3E8u);
         RTC_Start();
         enable_irq_for_pin(1, 27);
@@ -172,7 +172,7 @@ void wait_busy_sleep(int a1)
     RTC_Stop();
     RTC_IntClr(RTC_INT_CNT_UPP);
     NIVC_some_IRQ(0);
-    (*(unsigned int *)0xE000E180) = 1;
+    (*(volatile unsigned int *)0xE000E180) = 1;
     gSleepRtcCounter = 1000 * RTC_GetCounterVal() / 0x7FFFu + a1 * v1;
     printf("RTC_GetCounterVal(): %d, gSleepRtcCounter:%d(ms)\r\n", RTC_GetCounterVal(), gSleepRtcCounter);
     RTC_CounterReset();
