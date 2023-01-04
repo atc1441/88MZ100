@@ -5,6 +5,8 @@
 
 #define DISPLAY_WIDTH (640)
 #define DISPLAY_HEIGHT (384)
+#define DISPLAY_WIDTH_MM (164)
+#define DISPLAY_HEIGHT_MM (97)
 
 #define MAGNIFY1 3
 #define MAGNIFY2 2

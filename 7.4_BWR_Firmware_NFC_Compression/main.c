@@ -341,28 +341,29 @@ static void uiPrvDrawBitmap(uint32_t address, uint32_t size)
     {
         char error_reason[100];
         memset(error_reason, 0x00, sizeof(error_reason));
-        printf("We received a compressed image, lets decompress it.\r\n");
+        printf("Decomp img\r\n");
         size = decompress_file(address, size, EEPROM_UPDATE_START + sizeof(struct EepromImageHeader), EEPROM_UPDATE_LEN - sizeof(struct EepromImageHeader), error_reason); // Use the OTA so save file temporarly
         if (size == 0)
         {
-            printf("Decompression failed!!!\r\n");
-            uiPrvFullscreenMsg("Decompression failed!!!", error_reason, fwVerString());
+            printf("failed\r\n");
+            uiPrvFullscreenMsg("Decomp failed", error_reason, fwVerString());
             return;
         }
         FLASH_Read(0, address, (uint8_t *)&bmp, sizeof(struct BitmapFileHeader));
-        printf("Drawing decompressed image now\r\n");
+        printf("Decomp draw\r\n");
     }
 
     if (bmp.sig[0] != 'B' || bmp.sig[1] != 'M')
     {
-        printf("Image signature wrong!!!\r\n");
-        uiPrvFullscreenMsg("Signature wrong!!!", NULL, fwVerString());
+        printf("Sig wrong!!!\r\n");
+        uiPrvFullscreenMsg("Sig wrong", NULL, fwVerString());
         return;
     }
 
     if (bmp.headerSz < 40 || bmp.colorplanes != 1 || bmp.compression || !bmp.height || bmp.width <= 0 || bmp.bpp > 8)
     {
-        printf("BMP Header wrong\r\n");
+        printf("Header wrong\r\n");
+        uiPrvFullscreenMsg("Header wrong", NULL, fwVerString());
         return;
     }
 
@@ -787,10 +788,10 @@ static uint32_t uiNotPaired(struct Settings *settings, struct CommsInfo *ci)
     packet.pktType = PKT_ASSOC_REQ;
     packet.ti.protoVer = PROTO_VER_CURRENT;
     prvFillTagState(settings, &packet.ti.state);
-    packet.ti.screenPixWidth = 640;
-    packet.ti.screenPixHeight = 384;
-    packet.ti.screenMmWidth = 164;
-    packet.ti.screenMmHeight = 97;
+    packet.ti.screenPixWidth = DISPLAY_WIDTH;
+    packet.ti.screenPixHeight = DISPLAY_HEIGHT;
+    packet.ti.screenMmWidth = DISPLAY_WIDTH_MM;
+    packet.ti.screenMmHeight = DISPLAY_HEIGHT_MM;
     packet.ti.compressionsSupported = 0;
     packet.ti.maxWaitMsec = COMMS_MAX_RADIO_WAIT_MSEC;
     packet.ti.screenType = TagScreenEink_BW_1bpp;
@@ -814,7 +815,7 @@ static uint32_t uiNotPaired(struct Settings *settings, struct CommsInfo *ci)
     }
     else
     {
-        printf("Associate is not displayed\n");
+        printf("Assoc not displayed\n");
     }
     for (ch = 11; ch <= 11; ch++)
     {
@@ -914,7 +915,7 @@ static void prvGetSelfMac(void)
 static void showVersionAndVerifyMatch(void)
 {
     // the &mCurVersionExport access is necessary to make sure mCurVersionExport is referenced
-    printf("Booting FW ver 0x%08x%08x (at 0x%08x)\r\n",
+   /* printf("Booting FW ver 0x%08x%08x (at 0x%08x)\r\n",
            (unsigned)(mCurVersionExport >> 32), (unsigned)mCurVersionExport, &mCurVersionExport);
     if (((uint32_t)&mCurVersionExport) - 0x100000 != HW_TYPE_74_INCH_BWR_ROM_VER_OFST - 0x20)
     {
@@ -925,7 +926,7 @@ static void showVersionAndVerifyMatch(void)
     {
         printf("ver num @ red zone\r\n");
         sleep_with_with_wakeup(0);
-    }
+    }*/
 }
 
 void __attribute__((interrupt)) NMIException(void)
@@ -1082,7 +1083,7 @@ int main(void)
     //*** RTC
 
     //** Get the real wakeup reason
-    printf("Welcome, Reset reason: %i\r\n", reset_reason);
+    printf("Rst reason: %i\r\n", reset_reason);
     uint32_t real_reason = 0;
     if ((*(unsigned int *)0x130400) != 0x11223344)
     {
@@ -1136,13 +1137,9 @@ int main(void)
 
     if (real_reason == 1)
     {
-        printf("Erz IMAGES\r\n");
+        printf("Erz data\r\n");
         qspiEraseRange(EEPROM_IMG_START, EEPROM_IMG_LEN);
-
-        printf("Erz UPD\r\n");
         qspiEraseRange(EEPROM_UPDATE_START, EEPROM_UPDATE_LEN);
-
-        printf("Erz SETTINGS\r\n");
         qspiEraseRange(EEPROM_SETTINGS_AREA_START, EEPROM_SETTINGS_AREA_LEN);
 
         sprintf(macStr, "(" MACFMT ")", MACCVT(mSelfMac));
@@ -1154,7 +1151,6 @@ int main(void)
         struct EepromContentsInfo eci;
         memset(&eci, 0x00, sizeof(eci));
         prvEepromIndex(&eci);
-        printf("Pre drawing, Size: %i\r\n", eci.latestCompleteImgSize);
         uiPrvDrawLatestImage(&eci);
         sleep_with_with_wakeup(60 * 1000 * 5);
     }

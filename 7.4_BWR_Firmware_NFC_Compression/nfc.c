@@ -15,6 +15,8 @@
 #include "eeprom.h"
 #include "util.h"
 #include "timer.h"
+#include "epd.h"
+#include "proto.h"
 
 #define WHO_AM_I 0x04
 uint8_t i2c_address = 0xAA;
@@ -280,12 +282,12 @@ void nfc_set_default_config()
     }
     // Set default Config END
 }
-
+/*
 void nfc_dump_register()
 {
     uint8_t temp_dump[16];
 
-    printf("Dumping all regs now:\r\n");
+    printf("NFC:\r\n");
     for (int i = 0; i < 0xff; i++)
     {
         if (i != 0x39 && (i < 0x3B || i > 0xF7) && i != 0xFC && i != 0xFD && i != 0xFE)
@@ -300,7 +302,7 @@ void nfc_dump_register()
         }
     }
 }
-
+*/
 void nfc_write_session(uint8_t index, uint8_t mask, uint8_t data)
 {
     i2c_start();
@@ -450,6 +452,10 @@ extern void prvEepromIndex(struct EepromContentsInfo *eci);
 // This will get allready checked cmds buffer and can directly being used
 
 /*
+CMD 0x01:
+Get infos of the E-Paper Display like screen size etc.
+29 bytes of answer available TO BE DEFINED :)
+
 CMD 0x10:
 Erase IMAGE AREA. EEPROM_IMG_START to EEPROM_IMG_EACH
 expected_size = (buff_int[5] << 16) | (buff_int[6] << 8) | buff_int[7]
@@ -508,12 +514,34 @@ void handle_nfc_cmd(uint8_t buff_int[], int len_in)
     buff_out[0] = 0xFE; // NACK 0xFA = ACK
     if (len > (len_in - 5))
     {
-        printf("Something wrong, len to big %i\r\n", len);
+        printf("len to big %i\r\n", len);
         reply_nfc_cmd(buff_out, 1);
         return;
     }
     switch (cmd)
     {
+    case 0x01:
+    {
+        memset(buff_out, 0x00, sizeof(buff_out));
+        uint16_t temperature_c = measureTemp();
+        uint16_t battery_voltage = measureBattery();
+        buff_out[0] = 0xFA;
+        buff_out[1] = ((uint16_t)DISPLAY_WIDTH) >> 8;
+        buff_out[2] = ((uint8_t)DISPLAY_WIDTH);
+        buff_out[3] = ((uint16_t)DISPLAY_HEIGHT) >> 8;
+        buff_out[4] = ((uint8_t)DISPLAY_HEIGHT);
+        buff_out[5] = ((uint16_t)DISPLAY_WIDTH_MM) >> 8;
+        buff_out[6] = ((uint8_t)DISPLAY_WIDTH_MM);
+        buff_out[7] = ((uint16_t)DISPLAY_HEIGHT_MM) >> 8;
+        buff_out[8] = ((uint8_t)DISPLAY_HEIGHT_MM);
+        buff_out[9] = HW_TYPE_74_INCH_BWR;
+        buff_out[10] = temperature_c >> 8;
+        buff_out[11] = temperature_c;
+        buff_out[12] = battery_voltage >> 8;
+        buff_out[13] = battery_voltage;
+        reply_nfc_cmd(buff_out, 30);
+        break;
+    }
     case 0x10:
     {
         buff_out[0] = 0xFA;
@@ -537,7 +565,7 @@ void handle_nfc_cmd(uint8_t buff_int[], int len_in)
         {
             buff_out[0] = 0xFA;
             reply_nfc_cmd(buff_out, 1);
-            printf("Wrinting to flash at: %08X with len %i\r\n", EEPROM_IMG_START + address + sizeof(struct EepromImageHeader), len);
+            printf("Wrinting at: %08X len %i\r\n", EEPROM_IMG_START + address + sizeof(struct EepromImageHeader), len);
             FLASH_Write(false, EEPROM_IMG_START + address + sizeof(struct EepromImageHeader), data_buff, len);
         }
         break;
@@ -635,7 +663,7 @@ uint8_t nfc_handle()
         }
         if (timerGet() - last_comms > TIMER_TICKS_PER_MSEC * 6000)
         {
-            printf("NFC Timeout!\r\n");
+            printf("NFCout\r\n");
             break;
         }
         if (should_finish_it && timerGet() - last_comms > TIMER_TICKS_PER_MSEC * 500)
