@@ -16,7 +16,7 @@ Many infos about what all this is even about can be read at the [ZBS_Flasher](ht
 
 Currently the following Price tags are supported:
 
-- 7.4" 604x384 BWR With NFC and Zigbee [7.4_BWR_Firmware_NFC_Compression](7.4_BWR_Firmware_NFC_Compression) 
+- 7.4" 640x384 BWR With NFC and Zigbee [7.4_BWR_Firmware_NFC_Compression](7.4_BWR_Firmware_NFC_Compression) 
 
 <a href="pictures/74_pinout.jpg"><img width="250" alt="7.4 Pinout" src="pictures/74_pinout.jpg"></a>
 
