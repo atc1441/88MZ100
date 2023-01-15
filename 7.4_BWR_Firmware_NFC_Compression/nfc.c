@@ -254,7 +254,7 @@ void nfc_erase()
         {
             if (read_temp_buffer[b] != 0x00)
             {
-                dowrite = 0;
+                dowrite = 1;
                 break;
             }
         }
