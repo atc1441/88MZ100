@@ -45,18 +45,18 @@ def create_full_fw(filename,out_filename):
 #doing this testing here so we dont need a UART
 if(len(sys.argv)==4 and sys.argv[1] =='img'):
     create_full_fw(sys.argv[2],sys.argv[3])
-    exit()
+    sys.exit()
  
      
 if(len(sys.argv)!=4):
-    print("Example: COM1 read file.bin, or COM1 write file.bin, or COM1 write_flash file.bin")
+    print("Example: COM1 read file.bin, or COM1 write_ram file.bin, or COM1 write_flash file.bin")
     print("To create an OTA file use: img file.bin")
     print("Not the right arguments but here are the... please wait...")
     ports_list = "possible UART ports: "
     for port in serial.tools.list_ports.comports():
         ports_list += port.device + " "
     print(ports_list)
-    exit()
+    sys.exit()
     
 usedCom = sys.argv[1] #"COM14"
 read_or_write = sys.argv[2]
@@ -105,7 +105,7 @@ def uart_receive_handler(expected_len):
     print("Answer: " + ' '.join(format(x, '02x') for x in data_str))
     if(data_str[0]!=len(data_str)-1):
         print("Error while receiving")
-        exit()
+        sys.exit()
     return data_str
     
 def enable_swd(state=1):
@@ -222,7 +222,7 @@ uart_flush()
 if(read_or_write=='read'):
     dump_flash('read_' + file)
     
-elif(read_or_write=='write'):
+elif(read_or_write=='write_ram'):
     flash_file(file)
     
 elif(read_or_write=='write_flash'):
