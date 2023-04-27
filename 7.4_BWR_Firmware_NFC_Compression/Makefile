@@ -18,7 +18,7 @@ COMPORT = COM7
 
 build: clean compile create_ota_img flash_uart_flash
 only: clean compile create_ota_img
-uart: clean compile flash_uart
+uart: clean compile flash_uart_ram
 
 compile:
 	@mkdir -p build
@@ -67,8 +67,8 @@ compile:
 clean:
 	@rm -rf build/*
 	
-flash_uart:
-	@$(MZ_FLASHER) $(COMPORT) write main.bin
+flash_uart_ram:
+	@$(MZ_FLASHER) $(COMPORT) write_ram main.bin
 	
 flash_uart_flash:
 	@$(MZ_FLASHER) $(COMPORT) write_flash main.bin
